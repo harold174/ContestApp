@@ -1,0 +1,37 @@
+* Install GIT
+sudo apt-get update012
+sudo apt-get install git
+
+* Install jdk java
+http://www.2daygeek.com/how-to-install-java-7-openjdk-on-ubuntu/
+
+* Config python 3.4
+
+Edit file ~/.bash_aliases and put
+alias python='python3'
+* Install virtualenvwrapper
+
+http://virtualenvwrapper.readthedocs.org/en/latest/
+
+1. sudo apt-get install python-pip
+
+2. sudo pip install virtualenvwrapper
+
+3. mkvirtualenv --python=/usr/bin/python3 nameOfEnvironment
+
+4. pip install django
+
+5. Check 
+
+>>> import django
+>>> print(django.get_version())
+
+* Install PostgreSQL
+http://www.enterprisedb.com/crossover-thankyou
+Al archivo .run darle permisos de ejecución
+
+install sudo apt-get build-dep python-psycopg2
+pip install psycopg2 
+
+* Init migrate BD
+python manage.py migrate
