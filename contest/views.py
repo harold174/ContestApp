@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.template import RequestContext, loader
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello, world. You're at the contest index.")
+    context = {'var': 'hii'}
+    return render(request, 'contest/index.html', context)

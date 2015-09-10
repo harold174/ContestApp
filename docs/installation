@@ -47,3 +47,8 @@ git push -u origin master
 
 * Crear migraciones por app
 python manage.py makemigrations contest
+
+*Instalar Node para luego usar bower
+sudo apt-get install nodejs
+sudo npm install -g bower
+sudo ln -s /usr/bin/nodejs /usr/bin/node
