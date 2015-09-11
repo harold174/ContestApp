@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 class Administrator(models.Model):
@@ -8,6 +9,7 @@ class Administrator(models.Model):
     email = models.CharField(max_length=512, null=False)
     password = models.CharField(max_length=512)
     enable = models.BooleanField(null=False, default=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
 
 class Contest(models.Model):
