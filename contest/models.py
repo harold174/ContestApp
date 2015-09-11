@@ -2,10 +2,11 @@ from django.db import models
 
 # Create your models here.
 class Administrator(models.Model):
+    username = models.CharField(max_length=50, null=False)
     first_name = models.CharField(max_length=512, null=False)
     last_name = models.CharField(max_length=512, null=False)
     email = models.CharField(max_length=512, null=False)
-    shaPassword = models.CharField(max_length=512)
+    password = models.CharField(max_length=512)
     enable = models.BooleanField(null=False, default=True)
 
 
@@ -20,6 +21,12 @@ class Contest(models.Model):
     prize = models.CharField(max_length=512, null=False)
     owner = models.ForeignKey(Administrator, null=False)
     detail = models.CharField(max_length=512)
+
+
+class Competitor(models.Model):
+    first_name = models.CharField(max_length=256, null=False)
+    last_name = models.CharField(max_length=256, null=False)
+    email = models.CharField(max_length=256, null=False)
 
 
 class Video(models.Model):
@@ -40,13 +47,6 @@ class Video(models.Model):
     path_original = models.CharField(max_length=512)
     path_processed = models.CharField(max_length=512)
     owner = models.ForeignKey(Competitor)
-
-
-class Competitor(models.Model):
-    first_name = models.CharField(max_length=256, null=False)
-    last_name = models.CharField(max_length=256, null=False)
-    email = models.CharField(max_length=256, null=False)
-
 
 
 
