@@ -17,11 +17,13 @@ http://virtualenvwrapper.readthedocs.org/en/latest/
 
 2. sudo pip install virtualenvwrapper
 
-3. mkvirtualenv --python=/usr/bin/python3 nameOfEnvironment
+3. source /usr/local/bin/virtualenvwrapper.sh
 
-4. pip install django
+4. mkvirtualenv --python=/usr/bin/python3 nameOfEnvironment
 
-5. Check 
+5. pip install django
+
+6. Check 
 
 >>> import django
 >>> print(django.get_version())
