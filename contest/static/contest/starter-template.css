@@ -1,5 +1,7 @@
 body {
   padding-top: 50px;
+  background: white url("images/los-minions.jpg")no-repeat left top;
+  background-margin: 50px;
 }
 .starter-template {
   padding: 40px 15px;
