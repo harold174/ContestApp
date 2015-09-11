@@ -1,0 +1,69 @@
+* Install GIT
+sudo apt-get update012
+sudo apt-get install git
+
+* Install jdk java
+http://www.2daygeek.com/how-to-install-java-7-openjdk-on-ubuntu/
+
+* Config python 3.4
+
+Edit file ~/.bash_aliases and put
+alias python='python3'
+* Install virtualenvwrapper
+
+http://virtualenvwrapper.readthedocs.org/en/latest/
+
+1. sudo apt-get install python-pip
+
+2. sudo pip install virtualenvwrapper
+
+3. source /usr/local/bin/virtualenvwrapper.sh
+
+//Note that you have to specify the python 3 version by parameter
+4. mkvirtualenv --python=/usr/bin/python3 nameOfEnvironment
+
+5. pip install django
+
+6. Check django version
+
+>>> import django
+>>> print(django.get_version())
+
+* Install PostgreSQL
+http://www.enterprisedb.com/crossover-thankyou
+Al archivo .run darle permisos de ejecución
+
+// omitir ->install sudo apt-get build-dep python-psycopg2
+//Instalar driver postgres
+pip install psycopg2 
+
+*Instalar Bower
+sudo apt-get install nodejs
+sudo npm install -g bower
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+pip install django-bower
+
+seguir pasos de https://django-bower.readthedocs.org/en/latest/installation.html
+
+Para instalar dependencias en bower 
+./manage.py bower install
+
+* Init migrate BD
+python manage.py migrate
+
+* Crear migraciones por cambios en el modelo
+python manage.py makemigrations contest
+
+
+*Subir proyecto (Omitir)
+
+touch README.md
+git init
+git add README.md
+git commit -m "comentario"
+git remote add origin https://github.com/LuchoCastillo/Repositorio.git
+git push -u origin master
+
+
+
+
