@@ -39,5 +39,15 @@ class Video(models.Model):
                                       default=0)
     path_original = models.CharField(max_length=512)
     path_processed = models.CharField(max_length=512)
+    owner = models.ForeignKey(Competitor)
+
+
+class Competitor(models.Model):
+    first_name = models.CharField(max_length=256, null=False)
+    last_name = models.CharField(max_length=256, null=False)
+    email = models.CharField(max_length=256, null=False)
+
+
+
 
 
