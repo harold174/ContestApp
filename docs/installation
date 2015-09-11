@@ -17,11 +17,14 @@ http://virtualenvwrapper.readthedocs.org/en/latest/
 
 2. sudo pip install virtualenvwrapper
 
-3. mkvirtualenv --python=/usr/bin/python3 nameOfEnvironment
+3. source /usr/local/bin/virtualenvwrapper.sh
 
-4. pip install django
+//Note that you have to specify the python 3 version by parameter
+4. mkvirtualenv --python=/usr/bin/python3 nameOfEnvironment
 
-5. Check 
+5. pip install django
+
+6. Check django version
 
 >>> import django
 >>> print(django.get_version())
@@ -30,13 +33,29 @@ http://virtualenvwrapper.readthedocs.org/en/latest/
 http://www.enterprisedb.com/crossover-thankyou
 Al archivo .run darle permisos de ejecución
 
-install sudo apt-get build-dep python-psycopg2
+// omitir ->install sudo apt-get build-dep python-psycopg2
+//Instalar driver postgres
 pip install psycopg2 
+
+*Instalar Bower
+sudo apt-get install nodejs
+sudo npm install -g bower
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+pip install django-bower
+
+seguir pasos de https://django-bower.readthedocs.org/en/latest/installation.html
+
+Para instalar dependencias en bower 
+./manage.py bower install
 
 * Init migrate BD
 python manage.py migrate
 
-*Subir proyecto
+* Crear migraciones por cambios en el modelo
+python manage.py makemigrations contest
+
+
+*Subir proyecto (Omitir)
 
 touch README.md
 git init
@@ -45,15 +64,6 @@ git commit -m "comentario"
 git remote add origin https://github.com/LuchoCastillo/Repositorio.git
 git push -u origin master
 
-* Crear migraciones por app
-python manage.py makemigrations contest
 
-*Instalar Bower
-sudo apt-get install nodejs
-sudo npm install -g bower
-sudo ln -s /usr/bin/nodejs /usr/bin/node
-bower install bootstrap
 
-pip install django-bower
 
-seguir pasos de https://django-bower.readthedocs.org/en/latest/installation.html
