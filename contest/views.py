@@ -25,30 +25,35 @@ def login(request):
     if user is not None:
         #the password verified for the user
         if user.is_active:
-            print("User is valid, active and authenticated")
+            error="User is valid, active and authenticated"
         else:
-            print("The password is valid, but the account has been disabled!")
+            error="The password is valid, but the account has been disabled!"
     else:
         # the authentication system was unable to verify the username and password
-        print("The username and password were incorrect.")
+        error="The username and password were incorrect."
 
-    context = {'var': 'Login!!'}
+    context = {'error_auth': error}
     return render(request, 'contest/auth.html', context)
 
 
 def register(request):
+    error=""
     #Capture parameter
     email = request.POST['email']
     username = request.POST['username']
     firstname= request.POST['firstname']
     lastname= request.POST['firstname']
     password=request.POST['password']
-    #Saves user
-    user=User.objects.create_user(first_name=firstname, last_name=lastname, password=password, email=email, username=username)
-    user.save()
-    #Saves administrator
-    admin = Administrator(first_name=firstname, last_name=lastname, password=password, email=email, username=username, user=user)
-    admin.save()
+    password2=request.POST['password2']
+    if(password!=password2):
+        error="Las contraseñas no coinciden"
+    else:
+        #Saves user
+        user=User.objects.create_user(first_name=firstname, last_name=lastname, password=password, email=email, username=username)
+        user.save()
+        #Saves administrator
+        admin = Administrator(first_name=firstname, last_name=lastname, password=password, email=email, username=username, user=user)
+        admin.save()
     #Return page
-    context = {'var': 'Register!!'+email}
+    context = {'error_reg': error}
     return render(request, 'contest/auth.html', context)

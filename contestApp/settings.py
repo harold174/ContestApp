@@ -120,4 +120,5 @@ BOWER_COMPONENTS_ROOT = 'bower_components'
 
 BOWER_INSTALLED_APPS = (
     'bootstrap',
+    'bootstrap-validator'
 )

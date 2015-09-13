@@ -8,7 +8,9 @@
     <link href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}' rel="stylesheet">
 </head>
 <body>
+    <!--Container-->
     <div class="container">
+        <!--Login form-->
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
             <div class="panel panel-info" >
                     <div class="panel-heading">
@@ -20,15 +22,25 @@
 
                         <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 
-                        <form id="loginform" class="form-horizontal" method="post" action="/contest/login/">
+                        <form id="loginform" class="form-horizontal" method="post" action="/contest/login/" role="form" data-toggle="validator">
                             {% csrf_token %}
+                            {% if error_auth %}
+                                <div id="signupalert"  class="alert alert-danger">
+                                    <p>Error: {{error}}</p>
+                                    <span></span>
+                                </div>
+                                {% endif%}
                             <div style="margin-bottom: 25px" class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email">
+                                <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email"
+                                       data-error="Username is invalid" required>
+                                <div class="help-block with-errors"></div>
                             </div>
                             <div style="margin-bottom: 25px" class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                                <input id="login-password" type="password" class="form-control" name="password" placeholder="password"
+                                       data-error="Password is invalid" required>
+                                <div class="help-block with-errors"></div>
                             </div>
                             <div class="input-group">
                                 <div class="checkbox">
@@ -57,6 +69,7 @@
                     </div>
             </div>
         </div>
+        <!-- Register form-->
         <div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                     <div class="panel panel-info">
                         <div class="panel-heading">
@@ -64,41 +77,61 @@
                             <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">Sign In</a></div>
                         </div>
                         <div class="panel-body" >
-                            <form id="signupform" class="form-horizontal" method="post" action="/contest/register/">
+                            <form id="signupform" class="form-horizontal" method="post" action="/contest/register/" data-toggle="validator" role="form">
                                 {% csrf_token %}
-                                <div id="signupalert" style="display:none" class="alert alert-danger">
-                                    <p>Error:</p>
+                                {% if error_auth %}
+                                <div id="signupalert"  class="alert alert-danger">
+                                    <p>Error: {{error}}</p>
                                     <span></span>
                                 </div>
+                                {% endif%}
                                 <div class="form-group">
                                     <label for="email" class="col-md-3 control-label">Email</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" name="email" placeholder="Email Address">
+                                        <input type="text" class="form-control" name="email" placeholder="Email Address"
+                                               data-error="Email address is invalid" required>
+                                        <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="username" class="col-md-3 control-label">Username</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" name="username" placeholder="Username">
+                                        <input type="text" class="form-control" name="username" placeholder="Username"
+                                               data-error="Username is invalid" required>
+                                        <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="firstname" class="col-md-3 control-label">First Name</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" name="firstname" placeholder="First Name">
+                                        <input type="text" class="form-control" name="firstname" placeholder="First Name"
+                                               data-error="First name is invalid" required>
+                                        <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="lastname" class="col-md-3 control-label">Last Name</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" name="lastname" placeholder="Last Name">
+                                        <input type="text" class="form-control" name="lastname" placeholder="Last Name"
+                                               data-error="Last name is invalid" required>
+                                        <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="col-md-3 control-label">Password</label>
                                     <div class="col-md-9">
-                                        <input type="password" class="form-control" name="password" placeholder="Password">
+                                        <input type="password" class="form-control" name="password" placeholder="Password"
+                                               data-error="Password is invalid" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password2" class="col-md-3 control-label">Password Confirmation</label>
+                                    <div class="col-md-9">
+                                        <input type="password" class="form-control" name="password2" placeholder="Password Confirmation"
+                                               data-error="Confirmation password is invalid" required>
+                                        <div class="help-block with-errors"></div>
                                     </div>
                                 </div>
 
@@ -119,5 +152,6 @@
      <!-- Bootstrap -->
     <script type="text/javascript" src='{% static 'jquery/dist/jquery.min.js' %}'></script>
     <script type="text/javascript" src='{% static 'bootstrap/dist/js/bootstrap.min.js' %}'></script>
+    <script type="text/javascript" src='{% static 'bootstrap-validator/dist/validator.min.js' %}'></script>
 </body>
 </html>
