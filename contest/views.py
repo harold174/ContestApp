@@ -7,3 +7,4 @@ from django.template import RequestContext, loader
 def index(request):
     context = {'var': 'Hello Contest!!'}
     return render(request, 'contest/index.html', context)
+
