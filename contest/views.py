@@ -18,6 +18,7 @@ def auth(request):
 
 def login(request):
     #Capture parameter
+    error=""
     username = request.POST['username']
     password=request.POST['password']
     #Autenticate
@@ -25,7 +26,8 @@ def login(request):
     if user is not None:
         #the password verified for the user
         if user.is_active:
-            error="User is valid, active and authenticated"
+            print("User is valid, active and authenticated")
+            return render(request, 'contest/adminHome.html')
         else:
             error="The password is valid, but the account has been disabled!"
     else:

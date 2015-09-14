@@ -13,7 +13,7 @@
         <!--Login form-->
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
             <div class="panel panel-info" >
-                    <div class="panel-heading">
+                    <div class="panel-heading" style="background-color:#00AECC;">
                         <div class="panel-title">Sign In</div>
                         <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div>
                     </div>
@@ -25,8 +25,8 @@
                         <form id="loginform" class="form-horizontal" method="post" action="/contest/login/" role="form" data-toggle="validator">
                             {% csrf_token %}
                             {% if error_auth %}
-                                <div id="signupalert"  class="alert alert-danger">
-                                    <p>Error: {{error}}</p>
+                                <div id="loginalert"  class="alert alert-danger">
+                                    <p>Error: {{error_auth}}</p>
                                     <span></span>
                                 </div>
                                 {% endif%}
@@ -72,16 +72,16 @@
         <!-- Register form-->
         <div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
                     <div class="panel panel-info">
-                        <div class="panel-heading">
+                        <div class="panel-heading" style="background-color:#00AECC;">
                             <div class="panel-title">Sign Up</div>
                             <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="#" onclick="$('#signupbox').hide(); $('#loginbox').show()">Sign In</a></div>
                         </div>
                         <div class="panel-body" >
                             <form id="signupform" class="form-horizontal" method="post" action="/contest/register/" data-toggle="validator" role="form">
                                 {% csrf_token %}
-                                {% if error_auth %}
+                                {% if error_reg %}
                                 <div id="signupalert"  class="alert alert-danger">
-                                    <p>Error: {{error}}</p>
+                                    <p>Error: {{error_reg}}</p>
                                     <span></span>
                                 </div>
                                 {% endif%}
@@ -138,7 +138,7 @@
                                 <div class="form-group">
                                     <!-- Button -->
                                     <div class="col-md-offset-3 col-md-9">
-                                        <button id="btn-signup" type="submit" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
+                                        <button id="btn-signup" type="submit" class="btn btn-info"><i class="icon-hand-right"></i>Sign Up</button>
                                     </div>
                                 </div>
                             </form>
