@@ -48,7 +48,7 @@ def register(request):
     password=request.POST['password']
     password2=request.POST['password2']
     if(password!=password2):
-        error="Las contraseñas no coinciden"
+        error="Passwords don't match them"
     else:
         #Saves user
         user=User.objects.create_user(first_name=firstname, last_name=lastname, password=password, email=email, username=username)
@@ -59,3 +59,12 @@ def register(request):
     #Return page
     context = {'error_reg': error}
     return render(request, 'contest/auth.html', context)
+
+def dashboard(request):
+    return render(request, 'contest/dashboard.html')
+
+def createContest(request):
+    return render(request, 'contest/create.html')
+
+def showContest(request):
+    return render(request, 'contest/contest.html')
