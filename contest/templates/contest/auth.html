@@ -6,12 +6,27 @@
      <!-- Bootstrap core CSS -->
     {% load static %}
     <link href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}' rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static "contest/css/app.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "contest/css/play.css" %}" />
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" type="text/css" href="{% static "contest/font-awesome/css/font-awesome.min.css" %}" />
 </head>
 <body>
     <!--Container-->
     <div class="container">
+        <!-- Navigation -->
+        <nav class=" head-play">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header page-scroll">
+                    <a href="contest/"> <img class="logo-play" src="{% static "contest/img/logos/PlaymatchWhiteSmall.png" %}" alt="" /></a>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
         <!--Login form-->
-        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div id="loginbox" style="margin-top:80px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
             <div class="panel panel-info" >
                     <div class="panel-heading" style="background-color:#00AECC;">
                         <div class="panel-title">Sign In</div>
@@ -146,6 +161,33 @@
                     </div>
          </div>
     </div>
+    <footer class="footer-play">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="copyright">Copyright &copy; Playmatch 2015</span>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline social-buttons">
+                        <li><a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li><a href="#">Privacy Policy</a>
+                        </li>
+                        <li><a href="#">Terms of Use</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

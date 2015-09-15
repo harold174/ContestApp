@@ -68,3 +68,9 @@ def createContest(request):
 
 def showContest(request):
     return render(request, 'contest/contest.html')
+
+def contestPublic(request, id):
+    return render(request, 'contest/contest_public.html')
+
+def upload(request, id):
+    return render(request, 'contest/upload.html')
