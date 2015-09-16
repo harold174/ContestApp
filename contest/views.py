@@ -12,7 +12,9 @@ from django.views.generic import FormView, DetailView, ListView
 
 from .forms import ProfileImageForm
 from .models import ProfileImage
-
+from django.contrib.auth import logout
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -35,6 +37,7 @@ def login(request):
     if user is not None:
         #the password verified for the user
         if user.is_active:
+            auth_login(request, user)
             print("User is valid, active and authenticated")
             return render(request, 'contest/dashboard.html')
         else:
@@ -44,6 +47,12 @@ def login(request):
         error="The username and password were incorrect."
 
     context = {'error_auth': error}
+    return render(request, 'contest/auth.html', context)
+
+
+def logoutView(request):
+    logout(request)
+    context = {'var': 'Logout!!'}
     return render(request, 'contest/auth.html', context)
 
 
@@ -69,8 +78,10 @@ def register(request):
     context = {'error_reg': error}
     return render(request, 'contest/auth.html', context)
 
+@login_required
 def dashboard(request):
     return render(request, 'contest/dashboard.html')
+
 
 def createContest(request):
     return render(request, 'contest/create.html')

@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'auth/', views.auth, name='auth'),
     url(r'register/', views.register, name='register'),
     url(r'login/', views.login, name='login'),
+    url(r'logout/', views.logoutView, name='logout'),
     url(r'dashboard/new/$', views.createContest, name='create'),
     url(r'dashboard/show/$', views.showContest, name='show'),
     url(r'dashboard/$', views.dashboard, name='dashboard'),
