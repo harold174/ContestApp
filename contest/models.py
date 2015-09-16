@@ -51,5 +51,8 @@ class Video(models.Model):
     owner = models.ForeignKey(Competitor)
 
 
+class ProfileImage(models.Model):
+    image = models.FileField(upload_to='profile/%Y/%m/%d')
+
 
 
