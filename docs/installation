@@ -45,17 +45,31 @@ pip install django-bower
 
 seguir pasos de https://django-bower.readthedocs.org/en/latest/installation.html
 
-Para instalar dependencias en bower 
+# Instalar django-celery
+//Base de datos broker rabbitmq
+sudo apt-get install rabbitmq-server
+//Instalar django-celery
+pip install django-celery
+//Correr jobs
+python manage.py celery worker --loglevel=info
+
+#Convertir videos
+sudo add-apt-repository ppa:mc3man/trusty-media
+sudo apt-get update
+sudo apt-get install ffmpeg
+
+
+
+# Para instalar dependencias en bower 
 ./manage.py bower install
 
-* Init migrate BD
+# Init migrate BD
 python manage.py migrate
 
-* Crear migraciones por cambios en el modelo
+# Crear migraciones por cambios en el modelo
 python manage.py makemigrations contest
 
-
-*Subir proyecto (Omitir)
+# Subir proyecto (Omitir)
 
 touch README.md
 git init
