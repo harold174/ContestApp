@@ -8,6 +8,7 @@ from django.contrib.auth import logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 import datetime
+from contest.tasks import convertVideos
 
 
 # Create your views here.
@@ -96,6 +97,7 @@ def upload(request, id):
         video = Video(message=request.POST['message'], path_original=request.FILES['video'], owner=competitor,
                       status=1, created_date=datetime.datetime.now())
         video.save()
+        convertVideos.delay(request.FILES['video'].name, video.id)
         return render(request, 'contest/upload.html')
 
     return render(request, 'contest/upload.html')
