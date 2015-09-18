@@ -19,6 +19,7 @@ def convertVideos(video_name, id):
     video.save()
     command=" ffmpeg -i "+settings.MEDIA_ROOT+"/original_videos/"+video_name+" "+settings.MEDIA_ROOT+"/converted_videos/"+output_name+".mp4"
     subprocess.call(command, shell=True)
+    #updates video info
     video.converter_finish_date=datetime.datetime.now()
     video.status=2
     video.path_processed="converted_videos/"+output_name+".mp4"
