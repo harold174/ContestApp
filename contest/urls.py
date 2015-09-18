@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'dashboard/new/$', views.createContest, name='create'),
     url(r'dashboard/show/$', views.showContest, name='show'),
     url(r'dashboard/$', views.dashboard, name='dashboard'),
+    url(r'dashboard/save/$', views.saveContest, name='save'),
     url(r'play/(?P<id>[a-zA-Z0-9_]+)/$', views.contestPublic, name='contestPublic'),
     url(r'play/(?P<id>[a-zA-Z0-9_]+)/upload/$', views.upload, name='upload'),
     url(r'^upload/', ProfileImageView.as_view(), name='profile_image_upload'),

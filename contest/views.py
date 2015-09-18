@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-from .models import Administrator
+from .models import Administrator, Contest
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView, DetailView, ListView
@@ -15,6 +16,7 @@ from .models import ProfileImage
 from django.contrib.auth import logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
+from django.core.files import File
 
 # Create your views here.
 def index(request):
@@ -39,7 +41,7 @@ def login(request):
         if user.is_active:
             auth_login(request, user)
             print("User is valid, active and authenticated")
-            return render(request, 'contest/dashboard.html')
+            return redirect('/contest/dashboard', request)
         else:
             error="The password is valid, but the account has been disabled!"
     else:
@@ -53,7 +55,7 @@ def login(request):
 def logoutView(request):
     logout(request)
     context = {'var': 'Logout!!'}
-    return render(request, 'contest/auth.html', context)
+    return redirect('/contest')
 
 
 def register(request):
@@ -78,16 +80,39 @@ def register(request):
     context = {'error_reg': error}
     return render(request, 'contest/auth.html', context)
 
-@login_required
+@login_required(login_url='/contest/auth/')
 def dashboard(request):
-    return render(request, 'contest/dashboard.html')
+    admin = Administrator.objects.get(user=request.user)
+    contests = Contest.objects.all().filter(owner_id = admin.id)[:50]
+    context = {'username': request.user.username, 'contests': contests}
+    return render(request, 'contest/dashboard.html', context)
 
 
+@login_required(login_url='/contest/auth/')
 def createContest(request):
-    return render(request, 'contest/create.html')
+    context = {'username': request.user.username}
+    return render(request, 'contest/create.html', context)
 
+@login_required(login_url='/contest/auth/')
 def showContest(request):
-    return render(request, 'contest/contest.html')
+    context = {'username': request.user.username}
+    return render(request, 'contest/contest.html', context)
+
+@login_required(login_url='/contest/auth/')
+def saveContest(request):
+    name = request.POST['name']
+    image = request.POST['image']
+    url = request.POST['url']
+    start = request.POST['start']
+    end = request.POST['end']
+    prize = request.POST['prize']
+    if name and image and url and start and end and prize :
+        myfile = File(image)
+        return redirect('/contest/dashboard')
+    else:
+        context={'message':'All fields are mandatory'}
+        return render(request,'contest/create.html', context)
+
 
 def contestPublic(request, id):
     return render(request, 'contest/contest_public.html')
