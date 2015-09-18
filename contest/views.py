@@ -17,6 +17,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
 import datetime
+import re
 
 # Create your views here.
 def index(request):
@@ -84,7 +85,7 @@ def register(request):
 def dashboard(request):
     admin = Administrator.objects.get(user=request.user)
     contests = Contest.objects.all().filter(owner_id = admin.id)[:50]
-    context = {'username': request.user.username, 'contests': contests}
+    context = {'username': request.user.username, 'contests': contests, 'page':contests.count()}
     return render(request, 'contest/dashboard.html', context)
 
 
@@ -100,17 +101,38 @@ def showContest(request):
 
 @login_required(login_url='/contest/auth/')
 def saveContest(request):
-    name = request.POST['name']
-    image = request.POST['image']
-    url = request.POST['url']
-    start = request.POST['start']
-    end = request.POST['end']
-    prize = request.POST['prize']
-    if name and image and url and start and end and prize :
-        myfile = File(image)
-        return redirect('/contest/dashboard')
-    else:
-        context={'message':'All fields are mandatory'}
+
+    try:
+        name = request.POST['name']
+        url = request.POST['url']
+        start = request.POST['start']
+        end = request.POST['end']
+        prize = request.POST['prize']
+        image = request.FILES['image']
+        if name and url and start and end and prize :
+            matInit = re.match('(\d{4})[/.-](\d{2})[/.-](\d{2})$', start)
+            matEnd = re.match('(\d{4})[/.-](\d{2})[/.-](\d{2})$', end)
+            if matInit is None or matEnd is None:
+                context = {'message':'Dates must have the format yyy/mm/dd'}
+                return render(request,'contest/create.html', context)
+
+            valUrl = re.match('[a-zA-Z_0-9]*',url)
+            if valUrl is None:
+                context = {'message':'Url contest must have only numbers, uppercase letters, lowercase letters, or _'}
+                return render(request,'contest/create.html', context)
+
+            init = datetime.datetime.strptime(start, "%Y/%m/%d")
+            finish = datetime.datetime.strptime(end, "%Y/%m/%d")
+            contest = Contest(name=name,image=image, url=url, start_date=init, end_date = finish, created_date=datetime.datetime.now(),
+                              prize = prize, owner=Administrator.objects.get(user=request.user))
+            contest.save()
+            return redirect('/contest/dashboard')
+        else:
+            context={'message':'All fields are mandatory'}
+            return render(request,'contest/create.html', context)
+
+    except ValueError:
+        context = {'message':'Exception in validation of fields '}
         return render(request,'contest/create.html', context)
 
 

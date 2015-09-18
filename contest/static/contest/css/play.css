@@ -20,3 +20,14 @@
 body {
     height: 100%;
 }
+
+.panel-play{
+    z-index: 9000;
+    position: relative;
+    background-color: rgb(68, 68, 68);
+    color: #FFF !important;
+}
+
+.image-play{
+    max-height: 150px;
+}

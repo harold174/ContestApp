@@ -91,21 +91,25 @@
                                             <div class="col-sm-6 col-lg-6 col-md-6">
                                                 <nav>
                                                   <ul class="pagination">
+                                                    {% if page > 0 %}
                                                     <li>
                                                       <a href="#" aria-label="Previous">
                                                         <span aria-hidden="true">&laquo;</span>
                                                       </a>
                                                     </li>
+                                                    {% endif %}
                                                     <li class="active"><a href="#">1</a></li>
                                                     <li><a href="#">2</a></li>
                                                     <li><a href="#">3</a></li>
                                                     <li><a href="#">4</a></li>
                                                     <li><a href="#">5</a></li>
+                                                    {% if page|mul:50 < total  %}
                                                     <li>
                                                       <a href="#" aria-label="Next">
                                                         <span aria-hidden="true">&raquo;</span>
                                                       </a>
                                                     </li>
+                                                    {% endif %}
                                                   </ul>
                                                 </nav>
                                             </div>
@@ -122,80 +126,17 @@
                                             {% for contest in contests %}
                                                <div class="col-sm-4 col-lg-4 col-md-4"><a href="/contest/dashboard/show/">
                                                     <div class="thumbnail">
-                                                        <img src="{{ contest.image }}" alt="">
-                                                        <div class="caption">
+                                                        <img class="image-play" src="/contest/media/{{ contest.image }}" alt="">
+                                                        <div class="caption panel-play">
                                                             <h4>{{ contest.name }}</h4>
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h5><em>email </em></h5>
+                                                            <h5><em>Start: {{ contest.start_date }} </em></h5>
+                                                            <h5><em>End: {{ contest.end_date }} </em></h5>
+                                                            <h5><em>{{ contest.url }} </em></h5>
                                                             <p>{{ contest.prize }}</p>
                                                         </div>
                                                     </div></a>
                                                 </div>
                                             {% endfor %}
-
-
-                                                <div class="col-sm-4 col-lg-4 col-md-4"><a href="/contest/dashboard/show/">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>
-                                                    </div></a>
-                                                </div>
-
-                                                  <div class="col-sm-4 col-lg-4 col-md-4"><a href="/contest/dashboard/show/">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>
-                                                    </div></a>
-                                                </div>
-
-                                                <div class="col-sm-4 col-lg-4 col-md-4"><a href="/contest/dashboard/show/">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>
-                                                    </div></a>
-                                                </div>
-
-                                                <div class="col-sm-4 col-lg-4 col-md-4"><a href="/contest/dashboard/show/">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>
-                                                    </div></a>
-                                                </div>
-
-
-                                                <div class="col-sm-4 col-lg-4 col-md-4"><a href="/contest/dashboard/show/">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>
-                                                    </div></a>
-                                                </div>
-
-
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-6 col-lg-6 col-md-6">

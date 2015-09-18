@@ -115,7 +115,7 @@
                                                                 <span></span>
                                                             </div>
                                                          {% endif%}
-                                                        <form action="/contest/dashboard/save/" class="form-horizontal" method="post" >
+                                                        <form action="/contest/dashboard/save/" class="form-horizontal" method="post" enctype="multipart/form-data">
                                                             {% csrf_token %}
                                                             <h3>Contest Settings</h3>
 
