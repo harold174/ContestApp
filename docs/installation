@@ -46,9 +46,9 @@ pip install django-bower
 seguir pasos de https://django-bower.readthedocs.org/en/latest/installation.html
 
 # Instalar django-celery
-//Base de datos broker rabbitmq
+//Base de datos broker rabbitmq (http://celery.readthedocs.org/en/latest/getting-started/brokers/rabbitmq.html)
 sudo apt-get install rabbitmq-server
-//Instalar django-celery
+//Instalar django-celery (http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html#tut-celery)
 pip install django-celery
 //Correr jobs
 python manage.py celery worker --loglevel=info
@@ -79,5 +79,4 @@ git remote add origin https://github.com/LuchoCastillo/Repositorio.git
 git push -u origin master
 
 
-
-
+#Validator bootstrap (http://1000hz.github.io/bootstrap-validator/)
