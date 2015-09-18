@@ -32,9 +32,9 @@ class Competitor(models.Model):
 
 
 class Video(models.Model):
-    contest = models.ForeignKey(Contest, null=False)
-    created_date = models.DateTimeField(null=False)
-    message = models.CharField(max_length=256, null=False)
+    contest = models.ForeignKey(Contest, null=True)
+    created_date = models.DateTimeField( null=True)
+    message = models.CharField(max_length=256, null=True)
     READY = '2'
     IN_PROCESS = '1'
     DISABLED = '0'
@@ -45,10 +45,12 @@ class Video(models.Model):
     )
     status = models.CharField(max_length=1,
                                       choices=VIDEO_STATUS,
-                                      default=0)
-    path_original = models.CharField(max_length=512)
-    path_processed = models.CharField(max_length=512)
-    owner = models.ForeignKey(Competitor)
+                                      default=0, null=True)
+    path_original = models.FileField(upload_to='original_videos/',  null=True)
+    path_processed = models.FileField(upload_to='converted_videos/', null=True)
+    owner = models.ForeignKey(Competitor, null=True)
+    converter_start_date = models.DateTimeField( null=True)
+    converter_finish_date = models.DateTimeField( null=True)
 
 
 class ProfileImage(models.Model):

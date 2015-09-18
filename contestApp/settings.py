@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import djcelery
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -38,7 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'contest',
-    'djangobower'
+    'djangobower',
+    'djcelery',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -133,3 +135,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 LOGIN_URL='contest/auth/'
+
+
+BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+
+djcelery.setup_loader()

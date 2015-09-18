@@ -2,14 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script type="text/javascript" src='http://content.jwplatform.com/libraries/dMBQna5O.js'></script>
     <title>test upload</title>
 </head>
 <body>
 
-<!-- Upload form. Note enctype attribute! -->
-    <video controls>
-        <source src="/contest/media/{{image.image}}" alt="Smiley face2" height="400" width="400" type=video/mp4>
-    </video>
+    <div id='myElement' style="width:400px;height:400px;">Loading the player ...</div>
+    <script type="text/javascript">
+      var playerInstance = jwplayer("myElement");
+      playerInstance.setup({
+          file: "/contest/media/{{image.image}}",
+          image: "/contest/media/profile/2015/09/16/minions.jpg",
+          width: 320,
+          height: 240,
+          title: 'Basic Video Embed',
+          description: 'A video with a basic title and description!'
+      });
+    </script>
 
 </body>
 </html>

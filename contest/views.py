@@ -11,12 +11,12 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView, DetailView, ListView
 
-from .forms import ProfileImageForm
-from .models import ProfileImage
+from .models import Video, Competitor
 from django.contrib.auth import logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
+import datetime
 
 # Create your views here.
 def index(request):
@@ -117,34 +117,16 @@ def saveContest(request):
 def contestPublic(request, id):
     return render(request, 'contest/contest_public.html')
 
+
+
 def upload(request, id):
+    if request.method == 'POST':
+        #create competitor
+        competitor = Competitor(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'])
+        competitor.save()
+        video = Video(message=request.POST['message'], path_original=request.FILES['video'], owner=competitor,
+                      status=1, created_date=datetime.datetime.now())
+        video.save()
+        return render(request, 'contest/upload.html')
+
     return render(request, 'contest/upload.html')
-
-
-class ProfileImageView(FormView):
-    template_name = 'contest/profile_image_form.html'
-    form_class = ProfileImageForm
-
-    def form_valid(self, form):
-        profile_image = ProfileImage(
-            image=self.get_form_kwargs().get('files')['image'])
-        profile_image.save()
-        self.id = profile_image.id
-
-        return HttpResponseRedirect(self.get_success_url())
-
-    def get_success_url(self):
-        return reverse('profile_image', kwargs={'pk': self.id})
-
-
-class ProfileDetailView(DetailView):
-    model = ProfileImage
-    template_name = 'contest/profile_image.html'
-    context_object_name = 'image'
-
-
-class ProfileImageIndexView(ListView):
-    model = ProfileImage
-    template_name = 'contest/profile_image_view.html'
-    context_object_name = 'images'
-    queryset = ProfileImage.objects.all()

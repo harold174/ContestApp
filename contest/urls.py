@@ -1,5 +1,4 @@
 from django.conf.urls import url
-from .views import ProfileImageView, ProfileDetailView
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -18,6 +17,4 @@ urlpatterns = [
     url(r'dashboard/save/$', views.saveContest, name='save'),
     url(r'play/(?P<id>[a-zA-Z0-9_]+)/$', views.contestPublic, name='contestPublic'),
     url(r'play/(?P<id>[a-zA-Z0-9_]+)/upload/$', views.upload, name='upload'),
-    url(r'^upload/', ProfileImageView.as_view(), name='profile_image_upload'),
-    url(r'^uploaded/(?P<pk>\d+)/$', ProfileDetailView.as_view(),name='profile_image'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
