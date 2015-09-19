@@ -236,7 +236,7 @@ def contestPublic(request, url):
     try:
         contest = Contest.objects.get(url = url, enable = True)
         if contest and contest.enable:
-            allVideos = Video.objects.all().filter(contest = contest, status=0).order_by('-created_date')
+            allVideos = Video.objects.all().filter(contest = contest, status=2).order_by('-created_date')
             paginator = Paginator(allVideos, 50) # Show 50 contacts per page
             page = request.GET.get('page')
             try:
@@ -283,7 +283,7 @@ def saveUpload(request):
                           status=1, created_date=datetime.datetime.now(), contest=contest)
             video.save()
             convertVideos.delay(request.FILES['video'].name, video.id)
-            context = {'contest': contest,'message':'We have received your video, we are processing it in this moment. We will send you an email when the video had been published in the contest.'}
+            context = {'contest': contest,'message':'We have received your video and we are processing it in this moment. When the video had been published in the contest, we will send you an email.'}
             return render(request, 'contest/upload.html', context)
         else:
             context = {'message':'The contest is not available'}

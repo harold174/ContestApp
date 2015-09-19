@@ -53,6 +53,12 @@
                                                         </ol>
                                                         <h3>Uploading video to contest: <b>{{contest.name }}</b></h3>
                                                         <hr>
+                                                        {% if message %}
+                                                            <div class="alert alert-success">
+                                                                <p>{{message}}</p>
+                                                                <span></span>
+                                                            </div>
+                                                         {% endif%}
                                                         <!--TODO REPLACE NUMBER 1-->
                                                         <form action="{%url 'uploadVideo' %}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" data-toggle="validator">
                                                             {% csrf_token %}

@@ -20,8 +20,6 @@ lib64/
 parts/
 sdist/
 var/
-media/converted_videos
-media/original_videos
 *.egg-info/
 .installed.cfg
 *.egg
