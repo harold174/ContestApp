@@ -140,3 +140,10 @@ LOGIN_URL='contest/auth/'
 BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 
 djcelery.setup_loader()
+
+#Email settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'noreply.dummy10@gmail.com'
+EMAIL_HOST_PASSWORD = 'atalanta85'
+EMAIL_USE_TLS = True

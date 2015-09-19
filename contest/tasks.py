@@ -3,6 +3,7 @@ from django.conf import settings
 import subprocess
 from .models import Video
 import datetime
+from django.core.mail import send_mail
 
 
 @task()
@@ -24,4 +25,6 @@ def convertVideos(video_name, id):
     video.status=2
     video.path_processed="converted_videos/"+output_name+".mp4"
     video.save()
+    send_mail('Your video is ready', 'Hello '+video.owner.first_name+', your video is ready to view. Thanks for play!', settings.EMAIL_HOST_USER,
+    [video.owner.email], fail_silently=False)
 
