@@ -39,10 +39,10 @@
             <div class="topbar-main"><a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>                
                 
                 <ul class="nav navbar navbar-top-links navbar-right mbn">
-                     <li class="dropdown topbar-user"><a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="{% static "contest/img/avatar/48.jpg"%}" alt="" class="img-responsive img-circle"/>&nbsp;<span class="hidden-xs">My name</span>&nbsp;<span class="caret"></span></a>
+                     <li class="dropdown topbar-user"><a data-hover="dropdown" href="#" class="dropdown-toggle"><img src="{% static "contest/img/avatar/48.jpg"%}" alt="" class="img-responsive img-circle"/>&nbsp;<span class="hidden-xs">{{ username }}</span>&nbsp;<span class="caret"></span></a>
                         <ul class="dropdown-menu dropdown-user pull-right">
                             <li><a href="#"><i class="fa fa-user"></i>My Profile</a></li>
-                            <li><a href="#"><i class="fa fa-key"></i>Log Out</a></li>
+                            <li><a href="/contest/logout"><i class="fa fa-key"></i>Log Out</a></li>
                         </ul>
                     </li>                    
                 </ul>
@@ -79,9 +79,8 @@
                             Contest Detail</div>
                     </div>
                      <ol class="breadcrumb page-breadcrumb pull-right">
-                        <li><i class="fa fa-home"></i>&nbsp;<a href="index.html">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                        <li class="hidden"><a href="#">Show contest</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                        <li class="active">Show contest</li>
+                        <li><i class="fa fa-home"></i>&nbsp;<a href="/contest/dashboard/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+                        <li class="active">Create contest</li>
                     </ol>
                     <div class="clearfix">
                     </div>
@@ -92,266 +91,143 @@
                     <div id="tab-general">
                         <div class="row mbl  tab-content">
                             <div class="col-lg-12">
-                                    <div class="pull-right">
-                                        <a href="#" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
-                                        <a href="#" class="btn btn-danger"><i class="fa fa-close"></i>&nbsp;&nbsp;Delete</a>
+                                {% if message %}
+                                    <div class="alert alert-danger">
+                                        <p>Error: {{message}}</p>
+                                        <span></span>
                                     </div>
-                                    <hr>
-                                    <div>
-                                        <img class="slide-image" src="http://placehold.it/800x300"  style="height: 250px;" alt="">
-                                        <div class="col-md-9">
-                                            <h1>NOMBRE DEL CONCURSO</h1>
-                                            <h3>Descripcion del concurso</h3>
+                                {% else%}
+                                    <div class="row">
+                                        <div class="pull-right">
+                                            <a href="/contest/dashboard/edit/{{ contest.id }}" class="btn btn-primary"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
+                                            <a href="/contest/dashboard/delete/{{ contest.id }}" class="btn btn-danger"><i class="fa fa-close"></i>&nbsp;&nbsp;Delete</a>
                                         </div>
-                                        <div class="col-md-3">
-                                             <div class="col-md-6"><h3><i class="fa fa-calendar"></i>  Start date: yyyy/mm/dd</h3></div>
-                                             <div class="col-md-6"><h3><i class="fa fa-calendar"></i>  End date: yyyy/mm/dd</h3></div>                                                
+                                        <hr>
+                                        <div>
+                                            <img class="image-play-big slide-image" src="/contest/media/{{ contest.image }}"  alt="">
+                                            <div class="col-md-6">
+                                                <h1>{{ contest.name }}</h1>
+                                                <h3>{{ contest.prize }}</h3>
+                                            </div>
+                                            <div class="col-md-6">
+                                                 <div class="col-md-6"><h3><i class="fa fa-calendar"></i>  Start date:<br> {{ contest.start_date }}</h3></div>
+                                                 <div class="col-md-6"><h3><i class="fa fa-calendar"></i>  End date:<br> {{ contest.end_date }}</h3></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="page-content">
                                         <div class="row">
+                                            {% if videos|length > 0 %}
+                                             <h4>Pages</h4>
                                             <div class="col-sm-6 col-lg-6 col-md-6">
                                                 <nav>
                                                   <ul class="pagination">
+                                                    {% if videos.has_previous %}
                                                     <li>
-                                                      <a href="#" aria-label="Previous">
+                                                      <a href="/contest/dashboard/?page={{ videos.number|add:-1 }}" aria-label="Previous">
                                                         <span aria-hidden="true">&laquo;</span>
                                                       </a>
                                                     </li>
-                                                    <li class="active"><a href="#">1</a></li>
-                                                    <li><a href="#">2</a></li>
-                                                    <li><a href="#">3</a></li>
-                                                    <li><a href="#">4</a></li>
-                                                    <li><a href="#">5</a></li>
+                                                    {% endif %}
+                                                    {% for p in pages %}
+                                                        {% if p == videos.number %}
+                                                            <li class="active"><a href="/contest/dashboard/?page={{ videos.number}}">{{ videos.number }}</a></li>
+                                                        {% else %}
+                                                            <li><a href="/contest/dashboard/?page={{ p }}">{{ p }}</a></li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% if videos.has_next %}
                                                     <li>
-                                                      <a href="#" aria-label="Next">
+                                                      <a href="/contest/dashboard/?page={{ videos.number|add:1 }}" aria-label="Next">
                                                         <span aria-hidden="true">&raquo;</span>
                                                       </a>
                                                     </li>
+                                                    {% endif %}
                                                   </ul>
                                                 </nav>
                                             </div>
                                             <div class="col-sm-6 col-lg-6 col-md-6">
                                                 <nav>
                                                   <ul class="pager" style="text-align:right">
-                                                    <li><a href="#">Previous</a></li>
-                                                    <li><a href="#">Next</a></li>
+                                                      {% if videos.has_previous %}
+                                                         <li><a href="/contest/dashboard/?page={{ videos.number|add:-1 }}">Previous</a></li>
+                                                      {% endif %}
+                                                      {% if videos.has_next %}
+                                                        <li><a href="/contest/dashboard/?page={{ videos.number|add:1 }}">Next</a></li>
+                                                      {% endif %}
                                                   </ul>
                                                 </nav>
                                             </div>
+                                            {% else %}
+                                                <h4>No result.</h4>
+                                            {% endif %}
                                         </div>
                                         <div class="row">
+                                            {% for video in videos %}
                                                 <div class="col-sm-4 col-lg-4 col-md-4">
                                                     <div class="thumbnail">
                                                         <img src="http://placehold.it/320x150" alt="">
                                                         <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
+                                                            <h4 class="pull-right">{{ video.created_date }}</h4>
+                                                            <h4>{{ video.owner.name }} </h4>
+                                                            <h5><em>{{ video.owner.email }} </em></h5>
+                                                            <p>{{ video.message }}</p>
                                                         </div>                                                        
                                                     </div>
                                                 </div>
-
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">upload date</h4>
-                                                            <h4>User name </h4>
-                                                            <h5><em>email </em></h5>
-                                                            <p>Video description</p>
-                                                        </div>                                                        
-                                                    </div>
-                                                </div>
-
+                                            {% endfor %}
                                         </div>
-                                        <div class="row">
+                                       <div class="row">
+                                            {% if videos|length > 0 %}
+                                             <h4>Pages</h4>
                                             <div class="col-sm-6 col-lg-6 col-md-6">
                                                 <nav>
                                                   <ul class="pagination">
+                                                    {% if videos.has_previous %}
                                                     <li>
-                                                      <a href="#" aria-label="Previous">
+                                                      <a href="/contest/dashboard/?page={{ videos.number|add:-1 }}" aria-label="Previous">
                                                         <span aria-hidden="true">&laquo;</span>
                                                       </a>
                                                     </li>
-                                                    <li class="active"><a href="#">1</a></li>
-                                                    <li><a href="#">2</a></li>
-                                                    <li><a href="#">3</a></li>
-                                                    <li><a href="#">4</a></li>
-                                                    <li><a href="#">5</a></li>
+                                                    {% endif %}
+                                                    {% for p in pages %}
+                                                        {% if p == videos.number %}
+                                                            <li class="active"><a href="/contest/dashboard/?page={{ videos.number}}">{{ videos.number }}</a></li>
+                                                        {% else %}
+                                                            <li><a href="/contest/dashboard/?page={{ p }}">{{ p }}</a></li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% if videos.has_next %}
                                                     <li>
-                                                      <a href="#" aria-label="Next">
+                                                      <a href="/contest/dashboard/?page={{ videos.number|add:1 }}" aria-label="Next">
                                                         <span aria-hidden="true">&raquo;</span>
                                                       </a>
                                                     </li>
+                                                    {% endif %}
                                                   </ul>
                                                 </nav>
                                             </div>
                                             <div class="col-sm-6 col-lg-6 col-md-6">
                                                 <nav>
                                                   <ul class="pager" style="text-align:right">
-                                                    <li><a href="#">Previous</a></li>
-                                                    <li><a href="#">Next</a></li>
+                                                      {% if videos.has_previous %}
+                                                         <li><a href="/contest/dashboard/?page={{ videos.number|add:-1 }}">Previous</a></li>
+                                                      {% endif %}
+                                                      {% if videos.has_next %}
+                                                        <li><a href="/contest/dashboard/?page={{ videos.number|add:1 }}">Next</a></li>
+                                                      {% endif %}
                                                   </ul>
                                                 </nav>
                                             </div>
+                                            {% endif %}
                                         </div>
                                     </div>
+                                {% endif%}
                             </div>                            
                         </div>
                     </div>
-                </div>       
-                
-
+                </div>
                 <!--BEGIN FOOTER-->
                 <div id="footer">
                     <div class="copyright">

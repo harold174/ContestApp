@@ -14,7 +14,7 @@ class Administrator(models.Model):
 
 class Contest(models.Model):
     name = models.CharField(max_length=256, null=False)
-    image = models.CharField(max_length=512)
+    image = models.FileField(upload_to='banners/',  null=True)
     url = models.CharField(max_length=512, null=False)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
