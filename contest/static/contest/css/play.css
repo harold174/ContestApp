@@ -31,3 +31,7 @@ body {
 .image-play{
     max-height: 150px;
 }
+
+.image-play-big{
+    max-height: 250px;
+}

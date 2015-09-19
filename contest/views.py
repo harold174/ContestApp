@@ -15,7 +15,7 @@ from .models import Video, Competitor
 from django.contrib.auth import logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
-from django.core.files import File
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
 import re
 
@@ -84,8 +84,19 @@ def register(request):
 @login_required(login_url='/contest/auth/')
 def dashboard(request):
     admin = Administrator.objects.get(user=request.user)
-    contests = Contest.objects.all().filter(owner_id = admin.id)[:50]
-    context = {'username': request.user.username, 'contests': contests, 'page':contests.count()}
+    allContest = Contest.objects.all().filter(owner_id = admin.id, enable = True).order_by('-created_date')
+    paginator = Paginator(allContest, 50) # Show 50 contacts per page
+    page = request.GET.get('page')
+    try:
+        contests = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        contests = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contests = paginator.page(paginator.num_pages)
+
+    context = {'username': request.user.username, 'contests': contests, 'pages': paginator.page_range}
     return render(request, 'contest/dashboard.html', context)
 
 
@@ -95,12 +106,39 @@ def createContest(request):
     return render(request, 'contest/create.html', context)
 
 @login_required(login_url='/contest/auth/')
-def showContest(request):
-    context = {'username': request.user.username}
+def showContest(request, url):
+    admin = Administrator.objects.get(user=request.user)
+    contest = Contest.objects.get(owner_id = admin.id, url = url)
+    if contest and contest.enable:
+        videos = Video.objects.all().filter(contest = contest)
+        context = {'username': request.user.username, 'contest':contest,'videos': videos}
+    else:
+        context = {'message':'The contest is not available'}
     return render(request, 'contest/contest.html', context)
 
 @login_required(login_url='/contest/auth/')
-def saveContest(request):
+def editContest(request, id):
+    admin = Administrator.objects.get(user=request.user)
+    contest = Contest.objects.get(owner_id = admin.id, id = id)
+    if contest and contest.enable:
+        context = {'username': request.user.username, 'contest':contest}
+        return render(request, 'contest/create.html', context)
+    else:
+        context = {'username': request.user.username, 'message':'The contest is not available'}
+        return render(request, 'contest/contest.html', context)
+
+@login_required(login_url='/contest/auth/')
+def deleteContest(request, id):
+    admin = Administrator.objects.get(user=request.user)
+    contest = Contest.objects.get(owner_id = admin.id, id = id)
+    if contest and contest.enable:
+        contest.enable=False
+        contest.save()
+    return redirect('/contest/dashboard/')
+
+
+@login_required(login_url='/contest/auth/')
+def saveCreateContest(request):
 
     try:
         name = request.POST['name']
@@ -113,12 +151,12 @@ def saveContest(request):
             matInit = re.match('(\d{4})[/.-](\d{2})[/.-](\d{2})$', start)
             matEnd = re.match('(\d{4})[/.-](\d{2})[/.-](\d{2})$', end)
             if matInit is None or matEnd is None:
-                context = {'message':'Dates must have the format yyy/mm/dd'}
+                context = {'username': request.user.username,'message':'Dates must have the format yyy/mm/dd'}
                 return render(request,'contest/create.html', context)
 
             valUrl = re.match('[a-zA-Z_0-9]*',url)
             if valUrl is None:
-                context = {'message':'Url contest must have only numbers, uppercase letters, lowercase letters, or _'}
+                context = {'username': request.user.username,'message':'Url contest must have only numbers, uppercase letters, lowercase letters, or _'}
                 return render(request,'contest/create.html', context)
 
             init = datetime.datetime.strptime(start, "%Y/%m/%d")
@@ -128,13 +166,63 @@ def saveContest(request):
             contest.save()
             return redirect('/contest/dashboard')
         else:
-            context={'message':'All fields are mandatory'}
+            context={'username': request.user.username,'message':'All fields are mandatory'}
             return render(request,'contest/create.html', context)
 
-    except ValueError:
-        context = {'message':'Exception in validation of fields '}
+    except :
+        context = {'username': request.user.username,'message':'Exception in validation of fields '}
         return render(request,'contest/create.html', context)
 
+@login_required(login_url='/contest/auth/')
+def saveEditContest(request):
+    try:
+        id = request.POST['id']
+        admin = Administrator.objects.get(user=request.user)
+        contest = Contest.objects.get(owner_id = admin.id, id = id)
+        if contest and contest.enable:
+            try:
+                name = request.POST['name']
+                url = request.POST['url']
+                start = request.POST['start']
+                end = request.POST['end']
+                prize = request.POST['prize']
+                if name and url and start and end and prize:
+                    matInit = re.match('(\d{4})[/.-](\d{2})[/.-](\d{2})$', start)
+                    matEnd = re.match('(\d{4})[/.-](\d{2})[/.-](\d{2})$', end)
+                    if matInit is None or matEnd is None:
+                        context = {'username': request.user.username,'contest':contest,'username': request.user.username,'message':'Dates must have the format yyy/mm/dd'}
+                        return render(request,'contest/create.html', context)
+
+                    valUrl = re.match('[a-zA-Z_0-9]*',url)
+                    if valUrl is None:
+                        context = {'username': request.user.username,'contest':contest,'message':'Url contest must have only numbers, uppercase letters, lowercase letters, or _'}
+                        return render(request,'contest/create.html', context)
+
+                    init = datetime.datetime.strptime(start, "%Y/%m/%d")
+                    finish = datetime.datetime.strptime(end, "%Y/%m/%d")
+                    contest.prize=prize
+                    contest.start_date=init
+                    contest.end_date=finish
+                    try:
+                        image = request.FILES['image']
+                        contest.image=image
+                    except:
+                        pass
+                    contest.url=url
+                    contest.name=name
+                    contest.save()
+                    return redirect('/contest/dashboard')
+                else:
+                    context={'username': request.user.username,'contest':contest,'message':'All fields are mandatory'}
+                    return render(request,'contest/create.html', context)
+            except:
+                context = {'username': request.user.username,'contest':contest,'message':'Exception in validation of fields '}
+                return render(request,'contest/create.html', context)
+        else:
+            context={'username': request.user.username,'message':'The contest is not available'}
+            return render(request,'contest/contest.html', context)
+    except:
+        return redirect('/contest/dashboard')
 
 def contestPublic(request, id):
     return render(request, 'contest/contest_public.html')

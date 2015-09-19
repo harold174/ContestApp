@@ -78,9 +78,13 @@
                             New Contest</div>
                     </div>
                      <ol class="breadcrumb page-breadcrumb pull-right">
-                        <li><i class="fa fa-home"></i>&nbsp;<a href="index.html">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
-                        <li class="hidden"><a href="#">Create contest</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+                        <li><i class="fa fa-home"></i>&nbsp;<a href="/contest/dashboard/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+                         {% if contest %}
+                        <li class="active"><a href="/contest/dashboard/show/{{ contest.url }}">Show contest</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+                        <li class="active">Edit contest</li>
+                         {% else %}
                         <li class="active">Create contest</li>
+                         {% endif %}
                     </ol>
                     <div class="clearfix">
                     </div>
@@ -115,7 +119,12 @@
                                                                 <span></span>
                                                             </div>
                                                          {% endif%}
+                                                        {% if contest %}
+                                                        <form action="/contest/dashboard/edit/save/" class="form-horizontal" method="post" enctype="multipart/form-data">
+                                                            <input type="hidden" name="id" value="{{ contest.id }}"/>
+                                                        {% else %}
                                                         <form action="/contest/dashboard/save/" class="form-horizontal" method="post" enctype="multipart/form-data">
+                                                        {% endif %}
                                                             {% csrf_token %}
                                                             <h3>Contest Settings</h3>
 
@@ -123,14 +132,14 @@
 
                                                                 <div class="col-sm-9 controls">
                                                                     <div class="row">
-                                                                        <div class="col-xs-9"><input type="text" name="name" placeholder="My contest" class="form-control"/></div>
+                                                                        <div class="col-xs-9"><input type="text" name="name" placeholder="My contest" class="form-control" {% if contest %} value="{{ contest.name }}"{% endif %}/></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group"><label class="col-sm-3 control-label">Banner</label>
                                                                  <div class="col-sm-9 controls">
                                                                     <div class="row">
-                                                                    <input id="inputIncludeFile" type="file" name="image" placeholder="Include some file" />
+                                                                    <input id="inputIncludeFile" type="file" name="image" placeholder="Include some file" {% if contest %} value="{{ contest.image }}"{% endif %}/>
                                                                   </div>
                                                                 </div>                                                              
                                                             </div>
@@ -138,7 +147,7 @@
 
                                                                 <div class="col-sm-9 controls">
                                                                     <div class="row">
-                                                                        <div class="col-xs-9"><input type="text" name="url" placeholder="mycontest" class="form-control"/></div>
+                                                                        <div class="col-xs-9"><input type="text" name="url" placeholder="mycontest" class="form-control" {% if contest %} value="{{ contest.url }}"{% endif %}/></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -148,7 +157,7 @@
                                                                     <div class="row col-xs-9">
                                                                         <div class="input-icon right">
                                                                         <i class="fa fa-calendar"></i>
-                                                                        <input id="inputStartDate" type="text"  name="start" placeholder="yyyy/mm/dd" class="form-control" /></div>
+                                                                        <input id="inputStartDate" type="text"  name="start" placeholder="yyyy/mm/dd" class="form-control" {% if contest %} value="{{ contest.start_date.year }}/{{ contest.start_date.month }}/{{ contest.start_date.day}}"{% endif %}/></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -158,7 +167,7 @@
                                                                     <div class="row col-xs-9">
                                                                         <div class="input-icon right ">
                                                                         <i class="fa fa-calendar"></i>
-                                                                        <input id="inputFinishDate" type="text" name="end" placeholder="yyyy/mm/dd" class="form-control" /></div>
+                                                                        <input id="inputFinishDate" type="text" name="end" placeholder="yyyy/mm/dd" class="form-control" {% if contest %} value="{{ contest.end_date.year }}/{{ contest.end_date.month }}/{{ contest.end_date.day}}"{% endif %}/></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -167,11 +176,14 @@
 
                                                                 <div class="col-sm-9 controls">
                                                                     <div class="row">
-                                                                        <div class="col-xs-9"><textarea rows="3" name="prize" placeholder="Tell people which is the prize" class="form-control"></textarea></div>
+                                                                        <div class="col-xs-9"><textarea rows="3" name="prize" placeholder="Tell people which is the prize" class="form-control" >{% if contest %}{{ contest.prize }}{% endif %}</textarea></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <hr/>
+                                                             {% if contest %}
+                                                            <a href="/contest/dashboard/show/{{ contest.url }}" class="btn btn-danger btn-block">Cancel</a>
+                                                            {% endif %}
                                                             <button type="submit" class="btn btn-green btn-block">Save</button>
                                                         </form>
                                                     </div>

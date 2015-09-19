@@ -80,3 +80,6 @@ git push -u origin master
 
 
 #Validator bootstrap (http://1000hz.github.io/bootstrap-validator/)
+
+#Instalar los mathfilters para los templates
+pip install django-mathfilters
