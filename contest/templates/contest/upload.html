@@ -48,7 +48,7 @@
                                                 <div class="tab-content">
                                                     <div  class="fade in active">
                                                         <!--TODO REPLACE NUMBER 1-->
-                                                        <form action="{%url 'upload' 1 %}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+                                                        <form action="{%url 'upload' 1 %}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" data-toggle="validator">
                                                             {% csrf_token %}
                                                             <h3>Upload your video</h3><hr>
 
@@ -56,7 +56,10 @@
 
                                                                 <div class="col-sm-9 controls">
                                                                     <div class="row">
-                                                                        <div class="col-xs-9"><input type="text" placeholder="Whats your first name?" class="form-control" name="first_name"/></div>
+                                                                        <div class="col-xs-9"><input type="text" placeholder="Whats your first name?" class="form-control" name="first_name"
+                                                                                                     data-error="First Name is invalid" required>
+                                                                            <div class="help-block with-errors"></div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -64,7 +67,10 @@
 
                                                                 <div class="col-sm-9 controls">
                                                                     <div class="row">
-                                                                        <div class="col-xs-9"><input type="text" placeholder="Whats your last name?" class="form-control" name="last_name"/></div>
+                                                                        <div class="col-xs-9"><input type="text" placeholder="Whats your last name?" class="form-control" name="last_name"
+                                                                                                     data-error="Last Name is invalid" required>
+                                                                            <div class="help-block with-errors"></div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -72,7 +78,10 @@
 
                                                                 <div class="col-sm-9 controls">
                                                                     <div class="row">
-                                                                        <div class="col-xs-9"><input type="text" placeholder="me@letstart.com" class="form-control" name="email"/></div>
+                                                                        <div class="col-xs-9"><input type="text" placeholder="me@letstart.com" class="form-control" name="email"
+                                                                                                     data-error="Email is invalid" required>
+                                                                            <div class="help-block with-errors"></div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -81,7 +90,10 @@
 
                                                                 <div class="col-sm-9 controls">
                                                                     <div class="row">
-                                                                        <div class="col-xs-9"><textarea rows="3" placeholder="Tell people about your video and why you should win" class="form-control" name="message"></textarea></div>
+                                                                        <div class="col-xs-9"><textarea rows="3" placeholder="Tell people about your video and why you should win" class="form-control" name="message"
+                                                                                                        data-error="Description is invalid" required></textarea>
+                                                                            <div class="help-block with-errors"></div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -89,8 +101,10 @@
                                                             <div class="form-group"><label class="col-sm-3 control-label">Video</label>
                                                                  <div class="col-sm-9 controls">
                                                                     <div class="row">
-                                                                    <input id="inputIncludeFile" name="video" type="file" placeholder="Upload video" />
-                                                                  </div>
+                                                                        <input id="inputIncludeFile" name="video" type="file" placeholder="Upload video"
+                                                                               data-error="Video is invalid" required>
+                                                                            <div class="help-block with-errors"></div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <hr/>

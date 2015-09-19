@@ -1,23 +1,19 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import RequestContext, loader
-from .models import Administrator, Contest
+import datetime
+import re
+
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.views.generic import FormView, DetailView, ListView
-
-from .models import Video, Competitor
 from django.contrib.auth import logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-import datetime
-import re
+
+from .models import Administrator, Contest
+from .models import Video, Competitor
+from contest.tasks import convertVideos
+
 
 # Create your views here.
 def index(request):
@@ -281,6 +277,7 @@ def saveUpload(request):
         video = Video(message=request.POST['message'], path_original=request.FILES['video'], owner=competitor,
                       status=1, created_date=datetime.datetime.now())
         video.save()
+        convertVideos.delay(request.FILES['video'].name, video.id)
         return render(request, 'contest/upload.html')
 
     return render(request, 'contest/upload.html')
