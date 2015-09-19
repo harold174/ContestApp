@@ -104,7 +104,10 @@
                                         </nav>
                                     </div>
                                     {% else %}
-                                        <h4>No result.</h4>
+                                        <div class="text-center row">
+                                            <h2>Be the first one.</h2>
+                                            <a href="/contest/play/{{ contest.url }}/upload" class="btn btn-success"><i class="fa fa-youtube-play"></i>&nbsp;&nbsp;Let's start</a>
+                                        </div>
                                     {% endif %}
                                 </div>
                                 <div class="row">

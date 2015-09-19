@@ -179,6 +179,7 @@ def saveCreateContest(request):
         context = {'username': request.user.username,'message':'Exception in validation of fields '}
         return render(request,'contest/create.html', context)
 
+
 @login_required(login_url='/contest/auth/')
 def saveEditContest(request):
     try:
@@ -230,9 +231,10 @@ def saveEditContest(request):
     except:
         return redirect('/contest/dashboard')
 
+
 def contestPublic(request, url):
     try:
-        contest = Contest.objects.get(url = url)
+        contest = Contest.objects.get(url = url, enable = True)
         if contest and contest.enable:
             allVideos = Video.objects.all().filter(contest = contest, status=0).order_by('-created_date')
             paginator = Paginator(allVideos, 50) # Show 50 contacts per page
@@ -255,29 +257,39 @@ def contestPublic(request, url):
         return render(request, 'contest/contest_public.html', context)
 
 
-
-
 def upload(request, url):
-    if request.method == 'POST':
-        #create competitor
-        competitor = Competitor(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'])
-        competitor.save()
-        video = Video(message=request.POST['message'], path_original=request.FILES['video'], owner=competitor,
-                      status=1, created_date=datetime.datetime.now())
-        video.save()
-        return render(request, 'contest/upload.html')
+    try:
+        contest = Contest.objects.get(url = url, enable = True)
+        if contest is not None:
+            context = {'contest':contest}
+            return render(request, 'contest/upload.html', context)
+        else:
+            context = {'message':'The contest is not available'}
+            return render(request, 'contest/contest_public.html', context)
+    except:
+        context = {'message':'The contest is not available'}
+        return render(request, 'contest/contest_public.html', context)
 
-    return render(request, 'contest/upload.html')
 
 def saveUpload(request):
-    if request.method == 'POST':
-        #create competitor
-        competitor = Competitor(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'])
-        competitor.save()
-        video = Video(message=request.POST['message'], path_original=request.FILES['video'], owner=competitor,
-                      status=1, created_date=datetime.datetime.now())
-        video.save()
-        convertVideos.delay(request.FILES['video'].name, video.id)
-        return render(request, 'contest/upload.html')
+    try:
+        id = request.POST['id']
+        contest = Contest.objects.get(id = id, enable = True)
+        if contest is not None:
+            #create competitor
+            competitor = Competitor(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'])
+            competitor.save()
+            video = Video(message=request.POST['message'], path_original=request.FILES['video'], owner=competitor,
+                          status=1, created_date=datetime.datetime.now(), contest=contest)
+            video.save()
+            convertVideos.delay(request.FILES['video'].name, video.id)
+            context = {'contest': contest,'message':'We have received your video, we are processing it in this moment. We will send you an email when the video had been published in the contest.'}
+            return render(request, 'contest/upload.html', context)
+        else:
+            context = {'message':'The contest is not available'}
+            return render(request, 'contest/contest_public.html', context)
+    except:
+        context = {'message':'The contest is not available'}
+        return render(request, 'contest/contest_public.html', context)
 
-    return render(request, 'contest/upload.html')
+

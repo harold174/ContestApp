@@ -47,10 +47,16 @@
                                             <div class="col-md-12">
                                                 <div class="tab-content">
                                                     <div  class="fade in active">
+                                                        <ol class="breadcrumb page-breadcrumb pull-right " style="background-color: white;">
+                                                            <li><i class="fa fa-home"></i>&nbsp;<a href="/contest/play/{{ contest.url }}/">Home</a>&nbsp;&nbsp;<i class="fa fa-angle-right"></i>&nbsp;&nbsp;</li>
+                                                            <li class="active">Upload video</li>
+                                                        </ol>
+                                                        <h3>Uploading video to contest: <b>{{contest.name }}</b></h3>
+                                                        <hr>
                                                         <!--TODO REPLACE NUMBER 1-->
-                                                        <form action="{%url 'upload' 1 %}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" data-toggle="validator">
+                                                        <form action="{%url 'uploadVideo' %}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form" data-toggle="validator">
                                                             {% csrf_token %}
-                                                            <h3>Upload your video</h3><hr>
+                                                            <input type="hidden" name="id" value="{{ contest.id }}" />
 
                                                             <div class="form-group"><label class="col-sm-3 control-label">First Name</label>
 

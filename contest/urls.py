@@ -18,7 +18,8 @@ urlpatterns = [
     url(r'dashboard/edit/save/$', views.saveEditContest, name='saveEdit'),
     url(r'dashboard/show/(?P<url>[a-zA-Z0-9_]+)$', views.showContest, name='show'),
     url(r'dashboard/delete/(?P<id>[0-9]+)$', views.deleteContest, name='delete'),
+    url(r'video/save$', views.saveUpload, name='uploadVideo'),
     url(r'play/(?P<url>[a-zA-Z0-9_]+)/$', views.contestPublic, name='contestPublic'),
     url(r'play/(?P<url>[a-zA-Z0-9_]+)/upload/$', views.upload, name='upload'),
-    url(r'play/upload/$', views.saveUpload, name='uploadVideo'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
