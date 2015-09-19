@@ -226,6 +226,7 @@ def contestPublic(request, id):
 
 
 def upload(request, id):
+    #TODO put contest object from request
     if request.method == 'POST':
         #create competitor
         competitor = Competitor(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'])
