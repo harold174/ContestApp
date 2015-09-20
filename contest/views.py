@@ -279,6 +279,7 @@ def saveUpload(request):
             #create competitor
             competitor = Competitor(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'])
             competitor.save()
+            #request.FILES['video'].name=contest.id+"_"+datetime.datetime.now()._hour+"_"
             video = Video(message=request.POST['message'], path_original=request.FILES['video'], owner=competitor,
                           status=1, created_date=datetime.datetime.now(), contest=contest)
             video.save()
