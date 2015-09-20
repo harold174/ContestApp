@@ -9,12 +9,13 @@ $(".video_original").click(function(){
       var url = $(this).attr("data-url")
       var owner = $(this).attr("data-own")
       var desc = $(this).attr("data-desc")
-      var playerInstance = jwplayer("original");
-      playerInstance.setup({
+      var playerInstanceOriginal = jwplayer("original");
+      playerInstanceOriginal.setup({
           file: "/contest/media/"+url,
           title: 'Video of '+owner,
           description: desc
       });
+      $("#path-original").text("Repository path: "+url)
       resize_videos()
 });
 

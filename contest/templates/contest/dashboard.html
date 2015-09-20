@@ -91,8 +91,9 @@
                                     <div class="page-content">
                                        <div class="row">
                                            {% if contests|length > 0 %}
-                                             <h4>Pages</h4>
+                                             <h4>Results ({{ contests.start_index}} - {{ contests.end_index }}) items from {{ contests.paginator.count }}</h4>
                                             <div class="col-sm-6 col-lg-6 col-md-6">
+
                                                 <nav>
                                                   <ul class="pagination">
                                                     {% if contests.has_previous %}
@@ -153,7 +154,7 @@
                                         </div>
                                         <div class="row">
                                             {% if contests|length > 0 %}
-                                             <h4>Pages</h4>
+                                            <h4>Results ({{ contests.start_index}} - {{ contests.end_index }}) items from {{ contests.paginator.count }}</h4>
                                             <div class="col-sm-6 col-lg-6 col-md-6">
                                                 <nav>
                                                   <ul class="pagination">
