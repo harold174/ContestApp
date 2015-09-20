@@ -18,7 +18,7 @@ def convertVideos(video_name, id):
     video = Video.objects.get(pk=id)
     video.converter_start_date=datetime.datetime.now()
     video.save()
-    command=" ffmpeg -i "+settings.MEDIA_ROOT+"/original_videos/"+video_name+" "+settings.MEDIA_ROOT+"/converted_videos/"+output_name+".mp4"
+    command=" ffmpeg -i "+settings.MEDIA_ROOT+"/original_videos/"+video_name+" -vcodec libx264 -preset veryfast -crf 23 -c:a libfdk_aac "+settings.MEDIA_ROOT+"/converted_videos/"+output_name+".mp4"
     subprocess.call(command, shell=True)
     #updates video info
     video.converter_finish_date=datetime.datetime.now()

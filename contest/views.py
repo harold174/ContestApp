@@ -279,9 +279,14 @@ def saveUpload(request):
             #create competitor
             competitor = Competitor(first_name=request.POST['first_name'], last_name=request.POST['last_name'], email=request.POST['email'])
             competitor.save()
-            #request.FILES['video'].name=contest.id+"_"+datetime.datetime.now()._hour+"_"
+            extension= request.FILES['video'].name.split(".")
+            extension=extension[1]
+            now=datetime.datetime.now()
+            videoname='video_%s_%s_%s_%s.%s' % (contest.id, now.hour, now.minute, now.second, extension)
+            print(videoname)
+            request.FILES['video'].name=videoname
             video = Video(message=request.POST['message'], path_original=request.FILES['video'], owner=competitor,
-                          status=1, created_date=datetime.datetime.now(), contest=contest)
+                          status=1, created_date=now, contest=contest)
             video.save()
             convertVideos.delay(request.FILES['video'].name, video.id)
             context = {'contest': contest,'message':'We have received your video and we are processing it in this moment. When the video had been published in the contest, we will send you an email.'}

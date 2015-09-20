@@ -61,7 +61,9 @@ $ python manage.py shell
 sudo add-apt-repository ppa:mc3man/trusty-media
 sudo apt-get update
 sudo apt-get install ffmpeg
-
+sudo apt-get install libx264-dev
+ffmpeg --enable-libfdk-aac
+ffmpeg -i v2.avi -vcodec libx264 -crf 23 -c:a libfdk_aac v5.mp4
 
 
 # Para instalar dependencias en bower 
