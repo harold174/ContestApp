@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "contest/css/admin/shop-homepage.css"%}"/>
     <link rel="stylesheet" type="text/css" href="{% static "contest/css/admin/main.css"%}"/>
     <link rel="stylesheet" type="text/css" href="{% static "contest/css/admin/play.css"%}"/>
+    <script type="text/javascript" src='http://content.jwplatform.com/libraries/dMBQna5O.js'></script>
     <!-- Custom Fonts -->
     <link rel="stylesheet" type="text/css" href="{% static "contest/font-awesome/css/font-awesome.min.css" %}" />
 </head>
@@ -114,10 +115,18 @@
                                     {% for video in videos %}
                                         <div class="col-sm-4 col-lg-4 col-md-4">
                                             <div class="thumbnail">
-                                                <img src="http://placehold.it/320x150" alt="">
+                                                <!--<img src="http://placehold.it/320x150" alt="">-->
+                                                <div id='myElement{{video.id}}'>Loading the player ...</div>
+                                                <script type="text/javascript">
+                                                  var playerInstance = jwplayer("myElement{{video.id}}");
+                                                  playerInstance.setup({
+                                                      file: "/contest/media/{{video.path_processed}}",
+                                                      title: 'Video of {{video.owner.first_name}}',
+                                                      description: '{{video.message}}'
+                                                  });
+                                                </script>
                                                 <div class="caption">
-                                                    <h4 class="pull-right">{{ video.created_date }}</h4>
-                                                    <h4>{{ video.owner.name }} </h4>
+                                                    <h4>{{ video.owner.first_name }} {{ video.owner.last_name }}</h4>
                                                     <h5><em>{{ video.owner.email }} </em></h5>
                                                     <p>{{ video.message }}</p>
                                                 </div>
@@ -207,6 +216,7 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
      <!-- Bootstrap -->
+    <script type="text/javascript" src='{% static 'contest/js/play.js' %}'></script>
     <script type="text/javascript" src='{% static 'jquery/dist/jquery.min.js' %}'></script>
     <script type="text/javascript" src='{% static 'bootstrap/dist/js/bootstrap.min.js' %}'></script>
     <script type="text/javascript" src='{% static 'bootstrap-validator/dist/validator.min.js' %}'></script>

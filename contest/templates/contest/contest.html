@@ -19,6 +19,8 @@
     <link rel="stylesheet" type="text/css" href="{% static "contest/css/admin/shop-homepage.css"%}"/>
     <link rel="stylesheet" type="text/css" href="{% static "contest/css/play.css" %}" />
 
+    <script type="text/javascript" src='http://content.jwplatform.com/libraries/dMBQna5O.js'></script>
+
     <!-- Custom Fonts -->
     <link rel="stylesheet" type="text/css" href="{% static "contest/font-awesome/css/font-awesome.min.css" %}" />
     <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700">
@@ -166,15 +168,26 @@
                                         <div class="row">
                                             {% for video in videos %}
                                                 <div class="col-sm-4 col-lg-4 col-md-4">
-                                                    <div class="thumbnail">
-                                                        <img src="http://placehold.it/320x150" alt="">
-                                                        <div class="caption">
-                                                            <h4 class="pull-right">{{ video.created_date }}</h4>
-                                                            <h4>{{ video.owner.name }} </h4>
-                                                            <h5><em>{{ video.owner.email }} </em></h5>
-                                                            <p>{{ video.message }}</p>
-                                                        </div>                                                        
+                                                   <div class="thumbnail">
+                                                    <!--<img src="http://placehold.it/320x150" alt="">-->
+                                                    <div id='myElement{{video.id}}' class="play-video">Loading the player ...</div>
+                                                    <script type="text/javascript">
+                                                      var playerInstance = jwplayer("myElement{{video.id}}");
+                                                      playerInstance.setup({
+                                                          file: "/contest/media/{{video.path_processed}}",
+                                                          title: 'Video of {{video.owner.first_name}}',
+                                                          description: '{{video.message}}'
+                                                      });
+                                                    </script>
+                                                    <div class="caption">
+                                                        <botton class="video_original pull-right btn btn-primary" data-desc="{{video.message}}" data-own ="{{ video.owner.first_name }} {{ video.owner.last_name }}"  data-url ="{{ video.path_original }}" data-toggle="modal" data-target="#modalOriginal"><i class="fa fa-play"></i>&nbsp;&nbsp;Original</botton>
+                                                        <h6>Uploaded: {{ video.created_date }}</h6>
+                                                        <h6>Status: {% if video.status == "2" %}READY{% else %}IN PROCESS{% endif %}</h6>
+                                                        <h4>{{ video.owner.first_name }} {{ video.owner.last_name }}</h4>
+                                                        <h5><em>{{ video.owner.email }} </em></h5>
+                                                        <p>{{ video.message }}</p>
                                                     </div>
+                                            </div>
                                                 </div>
                                             {% endfor %}
                                         </div>
@@ -238,12 +251,33 @@
             <!--END PAGE WRAPPER-->
         </div>
     </div>
+    <!-- Modal -->
+    <div id="modalOriginal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Original Video</h4>
+          </div>
+          <div class="modal-body">
+            <div id='original' class="play-video">Loading the player ...</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
       <!-- Bootstrap -->
     <script type="text/javascript" src='{% static 'jquery/dist/jquery.min.js' %}'></script>
     <script type="text/javascript" src='{% static 'bootstrap/dist/js/bootstrap.min.js' %}'></script>
 
     <!-- Plugin JavaScript -->
 
+    <script type="text/javascript" src='{% static 'contest/js/play.js' %}'></script>
      <script type="text/javascript" src='{% static 'contest/js/admin/jquery-migrate-1.2.1.min.js' %}'></script>
     <script type="text/javascript" src='{% static 'contest/js/admin/bootstrap-hover-dropdown.js' %}'></script>
     <script type="text/javascript" src='{% static 'contest/js/admin/html5shiv.js' %}'></script>
