@@ -47,4 +47,14 @@ body {
 }
 .play-video{
     width: 100% !important;
+    background-color: #DEDEDE;
+    height: 250px;
+    text-align: center;
+    font-size:50px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+.play-video label{
+    top: 100px;
+    position: relative;
 }
