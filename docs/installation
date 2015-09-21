@@ -51,7 +51,7 @@ sudo apt-get install rabbitmq-server
 //Instalar django-celery (http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html#tut-celery)
 pip install django-celery
 //Correr jobs
-python manage.py celery worker --loglevel=info
+python manage.py celery worker --loglevel=info --autoscale=4,1
 //Test job 
 $ python manage.py shell
 >>> from myapp.tasks import add

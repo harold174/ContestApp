@@ -282,8 +282,7 @@ def saveUpload(request):
             extension= request.FILES['video'].name.split(".")
             extension=extension[1]
             now=datetime.datetime.now()
-            videoname='video_%s_%s_%s_%s.%s' % (contest.id, now.hour, now.minute, now.second, extension)
-            print(videoname)
+            videoname='video_%s_%s_%s_%s_%s.%s' % (contest.id, now.hour, now.minute, now.second, now.microsecond, extension)
             request.FILES['video'].name=videoname
             video = Video(message=request.POST['message'], path_original=request.FILES['video'], owner=competitor,
                           status=1, created_date=now, contest=contest)
