@@ -64,7 +64,7 @@
                             <div class="page-content">
                                 <div class="row">
                                     {% if videos|length > 0 %}
-                                     <h4>Pages</h4>
+                                    <h4>Results ({{ videos.start_index}} - {{ videos.end_index }}) items from {{ videos.paginator.count }}</h4>
                                     <div class="col-sm-6 col-lg-6 col-md-6">
                                         <nav>
                                           <ul class="pagination">
@@ -136,7 +136,7 @@
                                 </div>
                                <div class="row">
                                     {% if videos|length > 0 %}
-                                     <h4>Pages</h4>
+                                    <h4>Results ({{ videos.start_index}} - {{ videos.end_index }}) items from {{ videos.paginator.count }}</h4>
                                     <div class="col-sm-6 col-lg-6 col-md-6">
                                         <nav>
                                           <ul class="pagination">

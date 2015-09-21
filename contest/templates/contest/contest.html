@@ -121,7 +121,7 @@
                                     <div class="page-content">
                                         <div class="row">
                                             {% if videos|length > 0 %}
-                                             <h4>Pages</h4>
+                                            <h4>Results ({{ videos.start_index}} - {{ videos.end_index }}) items from {{ videos.paginator.count }}</h4>
                                             <div class="col-sm-6 col-lg-6 col-md-6">
                                                 <nav>
                                                   <ul class="pagination">
@@ -169,6 +169,7 @@
                                             {% for video in videos %}
                                                 <div class="col-sm-4 col-lg-4 col-md-4">
                                                    <div class="thumbnail">
+                                                   {% if video.status == "2" %}
                                                     <!--<img src="http://placehold.it/320x150" alt="">-->
                                                     <div id='myElement{{video.id}}' class="play-video">Loading the player ...</div>
                                                     <script type="text/javascript">
@@ -179,6 +180,11 @@
                                                           description: '{{video.message}}'
                                                       });
                                                     </script>
+                                                    {% else %}
+                                                    <div class="play-video">
+                                                        <label>IN PROCESS</label>
+                                                    </div>
+                                                    {% endif %}
                                                     <div class="caption">
                                                         <botton class="video_original pull-right btn btn-primary" data-desc="{{video.message}}" data-own ="{{ video.owner.first_name }} {{ video.owner.last_name }}"  data-url ="{{ video.path_original }}" data-toggle="modal" data-target="#modalOriginal"><i class="fa fa-play"></i>&nbsp;&nbsp;Original</botton>
                                                         <h6>Uploaded: {{ video.created_date }}</h6>
@@ -193,7 +199,7 @@
                                         </div>
                                        <div class="row">
                                             {% if videos|length > 0 %}
-                                             <h4>Pages</h4>
+                                            <h4>Results ({{ videos.start_index}} - {{ videos.end_index }}) items from {{ videos.paginator.count }}</h4>
                                             <div class="col-sm-6 col-lg-6 col-md-6">
                                                 <nav>
                                                   <ul class="pagination">
@@ -263,6 +269,7 @@
           </div>
           <div class="modal-body">
             <div id='original' class="play-video">Loading the player ...</div>
+            <p id="path-original"></p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
